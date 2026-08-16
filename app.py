@@ -43,6 +43,7 @@ english_score = st.number_input("English Score", 0.0, 100.0, 70.0)
 if st.button("Predict Final Grade"):
 
     input_data = pd.DataFrame([{
+        "student_id":1,
         "age": age,
         "gender": int(gender.split()[-1]),
         "school_type": int(school_type.split()[-1]),
