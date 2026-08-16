@@ -1,16 +1,21 @@
-
 import streamlit as st
 import pandas as pd
 import joblib
+import zipfile
+import os
 
 st.set_page_config(page_title="Student Performance Prediction")
 
 st.title("🎓 Student Performance Prediction")
 st.write("Enter student details to predict the final grade.")
 
+# Extract the model from the ZIP file
+if not os.path.exists("student_performance_model.pkl"):
+    with zipfile.ZipFile("student_performance_model.zip", "r") as zip_ref:
+        zip_ref.extractall(".")
+
 model = joblib.load("student_performance_model.pkl")
 
-student_id = st.number_input("Student ID", min_value=0, value=1)
 age = st.number_input("Age", min_value=10, max_value=30, value=18)
 gender = st.selectbox("Gender", ["Option 0", "Option 1", "Option 2"])
 school_type = st.selectbox("School Type", ["Option 0", "Option 1"])
@@ -38,7 +43,6 @@ english_score = st.number_input("English Score", 0.0, 100.0, 70.0)
 if st.button("Predict Final Grade"):
 
     input_data = pd.DataFrame([{
-        "student_id": student_id,
         "age": age,
         "gender": int(gender.split()[-1]),
         "school_type": int(school_type.split()[-1]),
